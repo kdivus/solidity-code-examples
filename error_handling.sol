@@ -5,12 +5,18 @@ contract Bank {
     mapping(address => uint256) balance;
     address owner;
     
+    modifier onlyOwner{
+        require(msg.sender == owner);
+        _; // this underscore means - run the function 
+    }
+    
+    
+    
     constructor(){
         owner = msg.sender;
     }
 
-    function addBalance(uint256 _ToAdd) public returns (uint256) {
-        require(msg.sender == owner);
+    function addBalance(uint256 _ToAdd) public onlyOwner returns (uint256) {
         balance[msg.sender] += _ToAdd;
         return balance[msg.sender];
     }
