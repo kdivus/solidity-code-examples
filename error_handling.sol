@@ -4,8 +4,8 @@ pragma solidity 0.7.5;
 contract Bank {
     mapping(address => uint256) balance;
     address owner;
-
-    constructor() {
+    
+    constructor(){
         owner = msg.sender;
     }
 
@@ -21,15 +21,16 @@ contract Bank {
 
     function transfer(address recipient, uint256 amount) public {
         require(balance[msg.sender] >= amount, "Balance not sufficient!");
-        require(
-            msg.sender != recipient,
-            "Transfering money to yourself is forbidden!"
-        );
-
+        require(msg.sender != recipient, "Transfering money to yourself is forbidden!");
+        
+        uint256 previousSenderBalance = balance[msg.sender];
+        
         _transfer(msg.sender, recipient, amount);
+        
+        assert(balance[msg.sender] == previousSenderBalance - amount);
     }
 
-    // it is common for internal functions to name them with underscore
+    // it is common to internal function name with underscore
     function _transfer(
         address from,
         address to,
@@ -39,3 +40,4 @@ contract Bank {
         balance[to] += amount;
     }
 }
+
