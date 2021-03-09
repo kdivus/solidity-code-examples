@@ -6,14 +6,17 @@ contract DataLocation {
     // permanent storage of data - data that is persistent over time and over function executions
 
     // 2. memory data location - used to store temporary data
+    // when something is stored to memory we can read and write to data!
     // used in variables within functions and for arguments
     // stored temporary as long as the functions executes, it is not necessary to store data that is only used for example once when you call a function
     // for simple data types we don't need to put keyword memory in front of the word becaues they are always stored in memory(value data types are always in memory)
     // for string - it can be storage(it can be complex data type) type, because we can make a reference to it, like in C++!
 
-    // callData
+    // callData - more complex type - for optimizing the way our contract handles data and gas
+    // similar to memory but read only!!!
 
     uint256 data = 4568; //example of storage data -> state variable
+    string lastText = "Hello Programmer";
 
     function getString(string memory text, uint256 number)
         public
