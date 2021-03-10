@@ -2,20 +2,20 @@
 pragma solidity 0.7.5;
 
 import "./Ownable.sol";
+import "./Destroyable.sol";
 
 contract Bank is Ownable {
-    
     mapping(address => uint256) balance;
-    
+
     event depositDone(uint256 amount, address indexed depositedTo);
 
-    function deposit() public payable returns (uint256){
+    function deposit() public payable returns (uint256) {
         balance[msg.sender] += msg.value;
         emit depositDone(msg.value, msg.sender);
         return balance[msg.sender];
     }
-    
-    function withdraw(uint256 amount) public onlyOwner returns(uint256){
+
+    function withdraw(uint256 amount) public onlyOwner returns (uint256) {
         // msg.sender is an payable address
         // transfer has built in error handling
         msg.sender.transfer(amount);
@@ -49,4 +49,3 @@ contract Bank is Ownable {
         balance[to] += amount;
     }
 }
-
