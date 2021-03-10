@@ -4,7 +4,7 @@ pragma solidity 0.7.5;
 import "./Ownable.sol";
 
 contract Destroyable is Ownable {
-    function destroy() public {
+    function destroy() public onlyOwner {
         selfdestruct(msg.sender);
     }
 }

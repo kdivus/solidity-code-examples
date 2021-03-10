@@ -4,7 +4,7 @@ pragma solidity 0.7.5;
 import "./Ownable.sol";
 import "./Destroyable.sol";
 
-contract Bank is Ownable {
+contract Bank is Ownable, Destroyable {
     mapping(address => uint256) balance;
 
     event depositDone(uint256 amount, address indexed depositedTo);
