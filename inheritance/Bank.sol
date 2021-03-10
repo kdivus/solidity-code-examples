@@ -4,7 +4,18 @@ pragma solidity 0.7.5;
 import "./Ownable.sol";
 import "./Destroyable.sol";
 
+interface GovernmentInterface {
+    function addTransaction(
+        address _from,
+        address _to,
+        uint256 _amount
+    ) external payable;
+}
+
 contract Bank is Ownable, Destroyable {
+    GovernmentInterface governmentInstance =
+        GovernmentInterface(0xa131AD247055FD2e2aA8b156A11bdEc81b9eAD95);
+
     mapping(address => uint256) balance;
 
     event depositDone(uint256 amount, address indexed depositedTo);
@@ -25,6 +36,10 @@ contract Bank is Ownable, Destroyable {
         return balance[msg.sender];
     }
 
+    function getOwner() public view returns (address) {
+        return owner;
+    }
+
     function transfer(address recipient, uint256 amount) public {
         require(balance[msg.sender] >= amount, "Balance not sufficient!");
         require(
@@ -35,6 +50,12 @@ contract Bank is Ownable, Destroyable {
         uint256 previousSenderBalance = balance[msg.sender];
 
         _transfer(msg.sender, recipient, amount);
+
+        governmentInstance.addTransaction{value: 1 ether}(
+            msg.sender,
+            recipient,
+            amount
+        );
 
         assert(balance[msg.sender] == previousSenderBalance - amount);
     }
